@@ -28,10 +28,7 @@ app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 app.use(stormpathMiddleware);
 
-
 app.get('/', function(request, response) {
-
-    console.log('LOGFBSECRET!!!!!!-' + fbSecret);
     response.render('home', {
     title: 'Welcome'
     });
@@ -49,6 +46,10 @@ app.get('/db', function (request, response) {
     });
   });
 })
+
+app.get('/admins', stormpath.groupsRequired(['admins']), function(req, res) {
+  res.send('If you can see this page, you must be an admin!');
+});
 
 app.use('/profile',stormpath.loginRequired,require('./profile')());
 
