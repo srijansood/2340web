@@ -7,15 +7,12 @@ var extend = require('xtend');
 
 // Declare the schema of our form:
 
-var profileForm = forms.create({
-  givenName: forms.fields.string({
-    required: true
-  }),
-  surname: forms.fields.string({ required: true }),
-  streetAddress: forms.fields.string(),
-  city: forms.fields.string(),
-  state: forms.fields.string(),
-  zip: forms.fields.string()
+var srForm = forms.create({
+  itemName: forms.fields.string({required: true}),
+  price: forms.fields.number({required: true}),
+  location: forms.fields.string({required: true}),
+  description: forms.fields.string({widget: forms.widgets.textarea}),
+
 });
 
 // A render function that will render our form and
@@ -25,13 +22,7 @@ var profileForm = forms.create({
 function renderForm(req,res,locals){
   res.render('newsr', extend({
     title: 'New Sales Report',
-    csrfToken: req.csrfToken(),
-    givenName: req.user.givenName,
-    surname: req.user.surname,
-    streetAddress: req.user.customData.streetAddress,
-    city: req.user.customData.city,
-    state: req.user.customData.state,
-    zip: req.user.customData.zip
+    csrfToken: req.csrfToken()
   },locals||{}));
 }
 
@@ -49,7 +40,7 @@ module.exports = function newsr(){
   // between GET and POST requests
 
   router.all('/', function(req, res) {
-    profileForm.handle(req,{
+    srForm.handle(req,{
       success: function(form){
         // The form library calls this success method if the
         // form is being POSTED and does not have errors

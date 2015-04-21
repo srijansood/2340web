@@ -17,61 +17,44 @@ html
             span #{error.error}
       if saved
         div.alert.alert-success
-          span Your profile has been saved
+          span Your Sales Report has been submitted
       form.login-form.form-horizontal(method='post', role='form')
         input(name='_csrf', type='hidden', value=csrfToken)
 
         div.form-group
-          label.col-sm-4 First Name
+          label.col-sm-4 Item Name
           div.col-sm-8
             input.form-control(
-              placeholder='Your first name',
+              placeholder='Item Name',
               required=true,
-              name='givenName',
+              name='itemName',
               type='text',
-              value=givenName)
+              value=itemName)
         div.form-group
-          label.col-sm-4 Last Name
+          label.col-sm-4 Price
           div.col-sm-8
-            input.form-control(placeholder='Your last name',
+            input.form-control(placeholder='Item Price',
               required=true,
-              name='surname',
-              type='text',
-              value=surname)
+              name='price',
+              type='number',
+              value=price)
         div.form-group
-          label.col-sm-4 Street address
+          label.col-sm-4 Store Location
           div.col-sm-8
-            input.form-control(placeholder='e.g. 123 Sunny Ave',
+            input.form-control(placeholder='Store Address',
               required=true,
-              name='streetAddress',
+              name='location',
               type='text',
-              value=streetAddress)
+              value=location)
         div.form-group
-          label.col-sm-4 City
+          label.col-sm-4 Description
           div.col-sm-8
-            input.form-control(placeholder='e.g. City',
-              required=true,
-              name='city',
+            input.form-control(placeholder='Item description',
+              name='description',
               type='text',
-              value=city)
-        div.form-group
-          label.col-sm-4 State
-          div.col-sm-8
-            input.form-control(placeholder='e.g. CA',
-              required=true,
-              name='state',
-              type='text',
-              value=state)
-        div.form-group
-          label.col-sm-4 ZIP
-          div.col-sm-8
-            input.form-control(placeholder='e.g. 94116',
-              required=true,
-              name='zip',
-              type='text',
-              value=zip)
+              value=description)
         div.form-group
           div.col-sm-offset-4.col-sm-8
-            button.login.btn.btn-primary(type='submit') Save
+            button.login.btn.btn-primary(type='submit') Submit
         div.pull-right
           a(href="/") Return to home page
