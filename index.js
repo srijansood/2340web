@@ -5,10 +5,14 @@ var pg = require('pg');
 var express = require('express');
 var stormpath = require('express-stormpath');
 var app = express();
+//var homedir = (process.platform === 'win32') ? process.env.HOMEPATH : process.env.HOME;
+//var keyfile = homedir + '/Dropbox/Studies/CS2340/web/.stormpath/apiKey.properties';
+var pwd = process.cwd();
+var keyfile = pwd + '/.stormpath/apiKey.properties';
 
 var stormpathMiddleware = stormpath.init(app, {
-  apiKeyFile: '/Users/Srijan/Dropbox/Studies/CS2340/web/apiKey.properties',
-  application: 'https://api.stormpath.com/v1/applications/62F09gnqgnKkRR4bj3Uzy5', //'https://api.stormpath.com/v1/applications/68wtNUaBNZUM3HicQ3PEQr',
+  apiKeyFile: keyfile,
+  application: 'https://api.stormpath.com/v1/applications/68wtNUaBNZUM3HicQ3PEQr',
   secretKey: 'some_long_random_string',
   expandCustomData: true,
   enableForgotPassword: true
@@ -17,8 +21,6 @@ var stormpathMiddleware = stormpath.init(app, {
 
 app.set('views', './views');
 app.set('view engine', 'jade');
-
-
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 app.use(stormpathMiddleware);
