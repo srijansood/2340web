@@ -9,9 +9,14 @@ html
 
         if user
           p Welcome, #{user.fullName}
+            a.btn.btn-primary(href="/logout") Logout
+
+          a.btn.btn-primary(href="/profile") Profile
+          a.btn.btn-primary(href="/wishlist") Wishlist
           p
-            a.small(href="profile") Edit my profile
-          a.btn.btn-primary(href="/logout") Logout
+          a.btn.btn-primary(href="/newsr") New SalesReport
+          a.btn.btn-primary(href="/friends") Friends
+
         else
           p Welcome, ready to get started?
           p

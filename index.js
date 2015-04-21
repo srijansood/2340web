@@ -1,11 +1,24 @@
-var express = require('express');
-var cool = require('cool-ascii-faces');
-var pg = require('pg');
-var stormpath = require('express-stormpath');
-var pwd = process.cwd();
+var express = require('express'),
+pg = require('pg'),
+stormpath = require('express-stormpath'),
+pwd = process.cwd(),
+stylus = require('stylus'),
+nib = require('nib');
 var keyfile = pwd + '/.stormpath/apiKey.properties';
-var fbSecret = pwd + '/.facebook.properties';
 var app = express();
+
+function compile(str, path) {
+  return stylus(str)
+    .set('filename', path)
+    .use(nib())
+}
+app.set('views', './views');
+app.set('view engine', 'jade');
+app.use(stylus.middleware(
+  { src: __dirname + '/public'
+  , compile: compile
+  }
+));
 
 var stormpathMiddleware = stormpath.init(app, {
   apiKeyFile: keyfile,
@@ -22,8 +35,6 @@ var stormpathMiddleware = stormpath.init(app, {
     }
 });
 
-app.set('views', './views');
-app.set('view engine', 'jade');
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 app.use(stormpathMiddleware);
@@ -52,6 +63,7 @@ app.get('/admins', stormpath.groupsRequired(['admins']), function(req, res) {
 });
 
 app.use('/profile',stormpath.loginRequired,require('./profile')());
+app.use('/newsr',require('./newsr')());
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'));
