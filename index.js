@@ -2,9 +2,26 @@ var express = require('express');
 var app = express();
 var cool = require('cool-ascii-faces');
 var pg = require('pg');
+var express = require('express');
+var stormpath = require('express-stormpath');
+var app = express();
+
+var stormpathMiddleware = stormpath.init(app, {
+  apiKeyFile: '/Users/Srijan/Dropbox/Studies/CS2340/web/apiKey.properties',
+  application: 'https://api.stormpath.com/v1/applications/62F09gnqgnKkRR4bj3Uzy5', //'https://api.stormpath.com/v1/applications/68wtNUaBNZUM3HicQ3PEQr',
+  secretKey: 'some_long_random_string',
+  expandCustomData: true,
+  enableForgotPassword: true
+});
+
+
+app.set('views', './views');
+app.set('view engine', 'jade');
+
 
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
+app.use(stormpathMiddleware);
 
 app.get('/', function(request, response) {
     var result = ''
@@ -13,7 +30,12 @@ app.get('/', function(request, response) {
         result += cool();
     }
     //uses the env variable TIMES from .env to append the result TIMES times.
-  response.send(result);
+
+    response.render('home', {
+    title: 'Welcome'
+    });
+
+    response.send(result);
 });
 
 app.get('/db', function (request, response) {
