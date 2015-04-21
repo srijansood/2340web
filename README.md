@@ -1,5 +1,5 @@
 # 2340web
-CS 2340 - Web App - Shopping with Friends
+Web Application - Shopping with Friends for CS2340
 
 ### Feature Log:
 1. Login:
