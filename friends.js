@@ -7,15 +7,9 @@ var extend = require('xtend');
 
 // Declare the schema of our form:
 
-var profileForm = forms.create({
-  givenName: forms.fields.string({
-    required: true
-  }),
-  surname: forms.fields.string({ required: true }),
-  streetAddress: forms.fields.string(),
-  city: forms.fields.string(),
-  state: forms.fields.string(),
-  zip: forms.fields.string(), 
+var friendForm = forms.create({
+  name: forms.fields.string({required: true}),
+
 });
 
 // A render function that will render our form and
@@ -23,22 +17,16 @@ var profileForm = forms.create({
 // as any situation-specific locals
 
 function renderForm(req,res,locals){
-  res.render('profile', extend({
-    title: 'My Profile',
-    csrfToken: req.csrfToken(),
-    givenName: req.user.givenName,
-    surname: req.user.surname,
-    streetAddress: req.user.customData.streetAddress,
-    city: req.user.customData.city,
-    state: req.user.customData.state,
-    zip: req.user.customData.zip
+  res.render('friends', extend({
+    title: 'Add Friends',
+    csrfToken: req.csrfToken()
   },locals||{}));
 }
 
 // Export a function which will create the
 // router and return it
 
-module.exports = function profile(){
+module.exports = function addFriends(){
 
   var router = express.Router();
 
@@ -49,7 +37,7 @@ module.exports = function profile(){
   // between GET and POST requests
 
   router.all('/', function(req, res) {
-    profileForm.handle(req,{
+    friendForm.handle(req,{
       success: function(form){
         // The form library calls this success method if the
         // form is being POSTED and does not have errors
@@ -57,12 +45,12 @@ module.exports = function profile(){
         // The express-stormpath library will populate req.user,
         // all we have to do is set the properties that we care
         // about and then cal save() on the user object:
-        req.user.givenName = form.data.givenName;
-        req.user.surname = form.data.surname;
-        req.user.customData.streetAddress = form.data.streetAddress;
-        req.user.customData.city = form.data.city;
-        req.user.customData.state = form.data.state;
-        req.user.customData.zip = form.data.zip;
+        // req.user.name = form.data.name;
+        // req.user.surname = form.data.surname;
+        // req.user.customData.streetAddress = form.data.streetAddress;
+        // req.user.customData.city = form.data.city;
+        // req.user.customData.state = form.data.state;
+        // req.user.customData.zip = form.data.zip;
         req.user.save(function(err){
           if(err){
             if(err.developerMessage){
