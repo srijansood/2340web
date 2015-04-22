@@ -56,7 +56,7 @@ app.get('/admins', stormpath.groupsRequired(['admins']), function(req, res) {
 
 app.use('/profile', stormpath.loginRequired, require('./profile')());
 app.use('/newsr', stormpath.loginRequired, require('./newsr')(currUser));
-app.use('/friends', require('./friends')());
+app.use('/friends', stormpath.loginRequired, require('./friends')());
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'));
