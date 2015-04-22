@@ -4,24 +4,8 @@ var csurf = require('csurf');
 var collectFormErrors = require('express-stormpath/lib/helpers').collectFormErrors;
 var stormpath = require('express-stormpath');
 var extend = require('xtend');
-var mongoose = require('mongoose'); mongoose.connect('mongodb://heroku_app36070442:9441gn6pji392s59nd7t3n9suq@dbh11.mongolab.com:27117/heroku_app36070442');
-//mongodb://dbuser:dbpass@host:port/dbname
-var db = mongoose.connection;
-
-
-var Schema = mongoose.Schema;
-var salesSchema = new Schema({
-    owner: String,
-    itemName: String,
-    price: Number,
-    location: String,
-    description: String
-});
-var salesModel = mongoose.model('SalesModel', salesSchema);
-
 
 // Declare the schema of our form:
-
 var srForm = forms.create({
   itemName: forms.fields.string({required: true}),
   price: forms.fields.number({required: true}),
@@ -44,13 +28,12 @@ function renderForm(req,res,locals){
 // router and return it
 
 module.exports = function newsr(){
-  var sales = new salesModel();
+  var sales =  new (require('./mongoUtil.js').salesModel)();
   var router = express.Router();
   router.use(csurf({ sessionKey: 'stormpathSession' }));
 
   // Capture all requests, the form library will negotiate
   // between GET and POST requests
-
   router.all('/', function(req, res) {
     srForm.handle(req,{
       success: function(form){
@@ -61,7 +44,6 @@ module.exports = function newsr(){
         // The express-stormpath library will populate req.user,
         // all we have to do is set the properties that we care
         // about and then cal save() on the user object:
-
         sales.owner = require('./index.js').currUser.username;
         sales.itemName = form.data.itemName;
         sales.price = form.data.price;

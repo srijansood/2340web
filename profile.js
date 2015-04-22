@@ -4,50 +4,57 @@ var csurf = require('csurf');
 var collectFormErrors = require('express-stormpath/lib/helpers').collectFormErrors;
 var stormpath = require('express-stormpath');
 var extend = require('xtend');
-
 // Declare the schema of our form:
 
 var profileForm = forms.create({
   givenName: forms.fields.string({
     required: true
   }),
-  surname: forms.fields.string({ required: true }),
-  streetAddress: forms.fields.string(),
-  city: forms.fields.string(),
-  state: forms.fields.string(),
-  zip: forms.fields.string()
+  surname: forms.fields.string({ required: true })
 });
+
+
+//Populates a list of sales reports created by the current user
+function populateSR(req, res, locals, cb) {
+    var salesModel =  require('./mongoUtil.js').salesModel;
+    var sr_data = [];
+    salesModel.find({owner: 'srijansood@gmail.com'},
+        function(err, sale) {
+            if (err) return handleError(err);
+        for (i = 0; i < sale.length; i++) {
+            var item = sale[i];
+            sr_data.push(item.itemName);
+            console.log('NAME: ' + item.itemName);
+        }
+        cb(sr_data);
+    });
+}
 
 // A render function that will render our form and
 // provide the values of the fields, as well
 // as any situation-specific locals
-
 function renderForm(req,res,locals){
-  res.render('profile', extend({
-    title: 'My Profile',
-    csrfToken: req.csrfToken(),
-    givenName: req.user.givenName,
-    surname: req.user.surname,
-    streetAddress: req.user.customData.streetAddress,
-    city: req.user.customData.city,
-    state: req.user.customData.state,
-    zip: req.user.customData.zip
-  },locals||{}));
+    populateSR(req, res, locals, function(sr_data) {
+        res.render('profile', extend({
+        title: 'My Profile',
+        csrfToken: req.csrfToken(),
+        givenName: req.user.givenName,
+        surname: req.user.surname,
+        email: req.user.username,
+        sr: sr_data
+        },locals||{}));
+    });
 }
 
 // Export a function which will create the
 // router and return it
-
 module.exports = function profile(){
 
   var router = express.Router();
-
-  // router.use(csurf());
   router.use(csurf({ sessionKey: 'stormpathSession' }));
 
   // Capture all requests, the form library will negotiate
   // between GET and POST requests
-
   router.all('/', function(req, res) {
     profileForm.handle(req,{
       success: function(form){
@@ -59,10 +66,6 @@ module.exports = function profile(){
         // about and then cal save() on the user object:
         req.user.givenName = form.data.givenName;
         req.user.surname = form.data.surname;
-        req.user.customData.streetAddress = form.data.streetAddress;
-        req.user.customData.city = form.data.city;
-        req.user.customData.state = form.data.state;
-        req.user.customData.zip = form.data.zip;
         req.user.save(function(err){
           if(err){
             if(err.developerMessage){
@@ -100,7 +103,6 @@ module.exports = function profile(){
   });
 
   // This is an error handler for this router
-
   router.use(function (err, req, res, next) {
     // This handler catches errors for this router
     if (err.code === 'EBADCSRFTOKEN'){
