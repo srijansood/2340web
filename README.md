@@ -14,7 +14,13 @@ It uses MongoDB as a *database* and is *persistent*. The database implementation
     * current user is exported - ____ Design Pattern
 2. Profile:
     * Forms library separates rendering and validation by passing the template to jade; model-view separation
+    * Displays Sales Report created by user
+    * Display Avg Rating //TODO
 3. Sales Report:
     * Stored in salesmodel Model
     * Required Fields usage in form
-4. Friends:
+    * Display Map location //TODO
+4. Friends: //TODO
+    * Add Friend by username
+    * Delete Friend
+    * Give Rating
