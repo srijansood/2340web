@@ -1,3 +1,4 @@
+var index = require('./index')
 var express = require('express');
 var forms = require('forms');
 var csurf = require('csurf');
@@ -6,7 +7,7 @@ var stormpath = require('express-stormpath');
 var extend = require('xtend');
 var mongoose = require('mongoose'); mongoose.connect('mongodb://heroku_app36070442:9441gn6pji392s59nd7t3n9suq@dbh11.mongolab.com:27117/heroku_app36070442');
 var db = mongoose.connection;
-var user;
+
 
 var Schema = mongoose.Schema;
 var salesSchema = new Schema({
@@ -59,7 +60,7 @@ module.exports = function newsr(){
         // The express-stormpath library will populate req.user,
         // all we have to do is set the properties that we care
         // about and then cal save() on the user object:
-        //sales.owner = req.user.ID;
+        sales.owner = global.currUser.username;
         sales.itemName = form.data.itemName;
         sales.price = form.data.price;
         sales.location = form.data.location;
@@ -67,7 +68,7 @@ module.exports = function newsr(){
         // req.user.surname = form.data.surname
         // res.write('USERID: ' + sales.owner);
         //res.write('Item Name: ' + sales);
-        res.send('User: ' + user);
+        res.send('Table: ' + sales);
         // req.user.save(function(err){
         //   if(err){
         //     if(err.developerMessage){

@@ -5,6 +5,8 @@ stylus = require('stylus'),
 nib = require('nib');
 var keyfile = pwd + '/.stormpath/apiKey.properties';
 var app = express();
+global.currUser; //singleton user
+
 // var mongoose = require('mongoose'); mongoose.connect('mongodb://heroku_app36070442:9441gn6pji392s59nd7t3n9suq@dbh11.mongolab.com:27117/heroku_app36070442');
 // var db = mongoose.connection;
 
@@ -36,11 +38,14 @@ var stormpathMiddleware = stormpath.init(app, {
     }
 });
 
+
+
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 app.use(stormpathMiddleware);
 
 app.get('/', function(request, response) {
+    global.currUser = request.user;
     response.render('home', {
     title: 'Welcome'
     });
@@ -63,9 +68,9 @@ app.get('/admins', stormpath.groupsRequired(['admins']), function(req, res) {
   res.send('If you can see this page, you must be an admin!');
 });
 
-app.use('/profile',stormpath.loginRequired,require('./profile')());
-app.use('/newsr',require('./newsr')());
-app.use('/friends',require('./friends')());
+app.use('/profile', stormpath.loginRequired, require('./profile')());
+app.use('/newsr', stormpath.loginRequired, require('./newsr')());
+app.use('/friends', require('./friends')());
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'));
