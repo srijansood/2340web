@@ -19,6 +19,7 @@ It uses MongoDB as a *database* and is *persistent*. The database implementation
 3. Sales Report:
     * Stored in salesmodel Model
     * Required Fields usage in form
+    * Display confirmation of submission? //TODO
     * Display Map location //TODO
 4. Friends: //TODO
     * Add Friend by username

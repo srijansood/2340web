@@ -5,7 +5,6 @@ var collectFormErrors = require('express-stormpath/lib/helpers').collectFormErro
 var stormpath = require('express-stormpath');
 var extend = require('xtend');
 // Declare the schema of our form:
-
 var profileForm = forms.create({
   givenName: forms.fields.string({
     required: true
@@ -18,13 +17,12 @@ var profileForm = forms.create({
 function populateSR(req, res, locals, cb) {
     var salesModel =  require('./mongoUtil.js').salesModel;
     var sr_data = [];
-    salesModel.find({owner: 'srijansood@gmail.com'},
+    salesModel.find({owner:  require('./index.js').currUser.username},
         function(err, sale) {
             if (err) return handleError(err);
         for (i = 0; i < sale.length; i++) {
             var item = sale[i];
             sr_data.push(item.itemName);
-            console.log('NAME: ' + item.itemName);
         }
         cb(sr_data);
     });
