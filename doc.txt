@@ -1,3 +1,5 @@
+Auth Library:
 15 min Stormpath guide - https://stormpath.com/blog/build-nodejs-express-stormpath-app/
-Product Stormpath -
-https://docs.stormpath.com/nodejs/express/product.html
+Express docs -
+https://docs.stormpath.com/nodejs/express/
+https://www.npmjs.com/package/express-stormpath
