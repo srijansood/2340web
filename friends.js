@@ -17,8 +17,8 @@ var friendForm = forms.create({
 // as any situation-specific locals
 
 function renderForm(req,res,locals){
-  res.render('addFriends', extend({
-    title: 'Add Friends'
+  res.render('friends', extend({
+    title: 'Add Friends',
     csrfToken: req.csrfToken()
   },locals||{}));
 }
@@ -45,7 +45,7 @@ module.exports = function addFriends(){
         // The express-stormpath library will populate req.user,
         // all we have to do is set the properties that we care
         // about and then cal save() on the user object:
-        req.user.name = form.data.name;
+        // req.user.name = form.data.name;
         // req.user.surname = form.data.surname;
         // req.user.customData.streetAddress = form.data.streetAddress;
         // req.user.customData.city = form.data.city;
