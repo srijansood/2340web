@@ -98,7 +98,7 @@ module.exports = function addFriends(){
         // session token is invalid or expired.
         // render the form anyways, but tell them what happened
         renderForm(req,res,{
-          errors:[{error:'Your form has expired.  Please try again.'}]
+          errors:[{error:'Your form has expired. Please try again.'}]
         });
       }else{
         // the user's cookies have been deleted, we dont know

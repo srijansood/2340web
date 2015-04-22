@@ -15,7 +15,7 @@ var profileForm = forms.create({
   streetAddress: forms.fields.string(),
   city: forms.fields.string(),
   state: forms.fields.string(),
-  zip: forms.fields.string(), 
+  zip: forms.fields.string()
 });
 
 // A render function that will render our form and
