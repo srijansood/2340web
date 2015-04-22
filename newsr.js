@@ -1,4 +1,3 @@
-var index = require('./index')
 var express = require('express');
 var forms = require('forms');
 var csurf = require('csurf');
@@ -11,7 +10,7 @@ var db = mongoose.connection;
 
 var Schema = mongoose.Schema;
 var salesSchema = new Schema({
-    owner: Number,
+    owner: String,
     itemName: String,
     price: Number,
     location: String,
@@ -51,23 +50,21 @@ module.exports = function newsr(){
   // between GET and POST requests
 
   router.all('/', function(req, res) {
-    user = req.user;
     srForm.handle(req,{
       success: function(form){
+
         // The form library calls this success method if the
         // form is being POSTED and does not have errors
 
         // The express-stormpath library will populate req.user,
         // all we have to do is set the properties that we care
         // about and then cal save() on the user object:
-        sales.owner = global.currUser.username;
+
+        sales.owner = require('./index.js').currUser.username;
         sales.itemName = form.data.itemName;
         sales.price = form.data.price;
         sales.location = form.data.location;
         sales.description = form.data.description;
-        // req.user.surname = form.data.surname
-        // res.write('USERID: ' + sales.owner);
-        //res.write('Item Name: ' + sales);
         res.send('Table: ' + sales);
         // req.user.save(function(err){
         //   if(err){

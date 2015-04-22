@@ -5,7 +5,7 @@ stylus = require('stylus'),
 nib = require('nib');
 var keyfile = pwd + '/.stormpath/apiKey.properties';
 var app = express();
-global.currUser; //singleton user
+var currUser; //singleton user
 
 // var mongoose = require('mongoose'); mongoose.connect('mongodb://heroku_app36070442:9441gn6pji392s59nd7t3n9suq@dbh11.mongolab.com:27117/heroku_app36070442');
 // var db = mongoose.connection;
@@ -44,11 +44,14 @@ app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
 app.use(stormpathMiddleware);
 
-app.get('/', function(request, response) {
-    global.currUser = request.user;
-    response.render('home', {
+
+
+app.get('/', function(req, res) {
+
+    res.render('home', {
     title: 'Welcome'
     });
+    module.exports.currUser = res.locals.user;
 });
 
 //Databse using PostgreSQL
@@ -69,7 +72,7 @@ app.get('/admins', stormpath.groupsRequired(['admins']), function(req, res) {
 });
 
 app.use('/profile', stormpath.loginRequired, require('./profile')());
-app.use('/newsr', stormpath.loginRequired, require('./newsr')());
+app.use('/newsr', stormpath.loginRequired, require('./newsr')(currUser));
 app.use('/friends', require('./friends')());
 
 app.listen(app.get('port'), function() {
