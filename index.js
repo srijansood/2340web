@@ -1,11 +1,12 @@
 var express = require('express'),
-pg = require('pg'),
 stormpath = require('express-stormpath'),
 pwd = process.cwd(),
 stylus = require('stylus'),
 nib = require('nib');
 var keyfile = pwd + '/.stormpath/apiKey.properties';
 var app = express();
+// var mongoose = require('mongoose'); mongoose.connect('mongodb://heroku_app36070442:9441gn6pji392s59nd7t3n9suq@dbh11.mongolab.com:27117/heroku_app36070442');
+// var db = mongoose.connection;
 
 function compile(str, path) {
   return stylus(str)
@@ -46,17 +47,17 @@ app.get('/', function(request, response) {
 });
 
 //Databse using PostgreSQL
-app.get('/db', function (request, response) {
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('SELECT * FROM test_table', function(err, result) {
-      done();
-      if (err)
-       { console.error(err); response.send("Error " + err); }
-      else
-       { response.send(result.rows); }
-    });
-  });
-})
+// app.get('/db', function (request, response) {
+//   pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+//     client.query('SELECT * FROM test_table', function(err, result) {
+//       done();
+//       if (err)
+//        { console.error(err); response.send("Error " + err); }
+//       else
+//        { response.send(result.rows); }
+//     });
+//   });
+// })
 
 app.get('/admins', stormpath.groupsRequired(['admins']), function(req, res) {
   res.send('If you can see this page, you must be an admin!');

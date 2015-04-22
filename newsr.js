@@ -4,6 +4,20 @@ var csurf = require('csurf');
 var collectFormErrors = require('express-stormpath/lib/helpers').collectFormErrors;
 var stormpath = require('express-stormpath');
 var extend = require('xtend');
+var mongoose = require('mongoose'); mongoose.connect('mongodb://heroku_app36070442:9441gn6pji392s59nd7t3n9suq@dbh11.mongolab.com:27117/heroku_app36070442');
+var db = mongoose.connection;
+var user;
+
+var Schema = mongoose.Schema;
+var salesSchema = new Schema({
+    owner: Number,
+    itemName: String,
+    price: Number,
+    location: String,
+    description: String
+});
+var salesModel = mongoose.model('SalesModel', salesSchema);
+var sales = new salesModel();
 
 // Declare the schema of our form:
 
@@ -12,7 +26,6 @@ var srForm = forms.create({
   price: forms.fields.number({required: true}),
   location: forms.fields.string({required: true}),
   description: forms.fields.string({widget: forms.widgets.textarea}),
-
 });
 
 // A render function that will render our form and
@@ -23,23 +36,21 @@ function renderForm(req,res,locals){
   res.render('newsr', extend({
     title: 'New Sales Report',
     csrfToken: req.csrfToken()
-  },locals||{}));
+  } , locals || {} ));
 }
 
 // Export a function which will create the
 // router and return it
 
 module.exports = function newsr(){
-
   var router = express.Router();
-
-  // router.use(csurf());
   router.use(csurf({ sessionKey: 'stormpathSession' }));
 
   // Capture all requests, the form library will negotiate
   // between GET and POST requests
 
   router.all('/', function(req, res) {
+    user = req.user;
     srForm.handle(req,{
       success: function(form){
         // The form library calls this success method if the
@@ -48,29 +59,32 @@ module.exports = function newsr(){
         // The express-stormpath library will populate req.user,
         // all we have to do is set the properties that we care
         // about and then cal save() on the user object:
-        req.user.givenName = form.data.givenName;
-        req.user.surname = form.data.surname;
-        req.user.customData.streetAddress = form.data.streetAddress;
-        req.user.customData.city = form.data.city;
-        req.user.customData.state = form.data.state;
-        req.user.customData.zip = form.data.zip;
-        req.user.save(function(err){
-          if(err){
-            if(err.developerMessage){
-              console.error(err);
-            }
-            renderForm(req,res,{
-              errors: [{
-                error: err.userMessage ||
-                err.message || String(err)
-              }]
-            });
-          }else{
-            renderForm(req,res,{
-              saved:true
-            });
-          }
-        });
+        //sales.owner = req.user.ID;
+        sales.itemName = form.data.itemName;
+        sales.price = form.data.price;
+        sales.location = form.data.location;
+        sales.description = form.data.description;
+        // req.user.surname = form.data.surname
+        // res.write('USERID: ' + sales.owner);
+        //res.write('Item Name: ' + sales);
+        res.send('User: ' + user);
+        // req.user.save(function(err){
+        //   if(err){
+        //     if(err.developerMessage){
+        //       console.error(err);
+        //     }
+        //     renderForm(req,res,{
+        //       errors: [{
+        //         error: err.userMessage ||
+        //         err.message || String(err)
+        //       }]
+        //     });
+        //   }else{
+        //     renderForm(req,res,{
+        //       saved:true
+        //     });
+        //   }
+        // });
       },
       error: function(form){
         // The form library calls this method if the form
