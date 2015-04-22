@@ -5,6 +5,7 @@ var collectFormErrors = require('express-stormpath/lib/helpers').collectFormErro
 var stormpath = require('express-stormpath');
 var extend = require('xtend');
 var mongoose = require('mongoose'); mongoose.connect('mongodb://heroku_app36070442:9441gn6pji392s59nd7t3n9suq@dbh11.mongolab.com:27117/heroku_app36070442');
+//mongodb://dbuser:dbpass@host:port/dbname
 var db = mongoose.connection;
 
 
@@ -17,7 +18,7 @@ var salesSchema = new Schema({
     description: String
 });
 var salesModel = mongoose.model('SalesModel', salesSchema);
-var sales = new salesModel();
+
 
 // Declare the schema of our form:
 
@@ -43,6 +44,7 @@ function renderForm(req,res,locals){
 // router and return it
 
 module.exports = function newsr(){
+  var sales = new salesModel();
   var router = express.Router();
   router.use(csurf({ sessionKey: 'stormpathSession' }));
 
@@ -65,6 +67,7 @@ module.exports = function newsr(){
         sales.price = form.data.price;
         sales.location = form.data.location;
         sales.description = form.data.description;
+        sales.save();
         res.send('Table: ' + sales);
         // req.user.save(function(err){
         //   if(err){
