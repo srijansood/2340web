@@ -6,7 +6,7 @@ The web app is made in Node.js, and uses the Jade templating engine which allows
 It uses MongoDB as a database and is persistent.
 1. Login:
     * Standard
-    * Facebook Integrtion
+    * Facebook Integration
     * Admin - Test with https://swf45.herokuapp.com/admins
     * Email based password recovery
     * current user is exported - ____ Design Pattern
