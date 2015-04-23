@@ -28,6 +28,20 @@ function populateSR(req, res, locals, cb) {
     });
 }
 
+function populateWL(req, res, locals, cb) {
+    var wishModel =  require('./mongoUtil.js').wishModel;
+    var wl_data = [];
+    wishModel.find({owner:  require('./index.js').currUser.username},
+        function(err, wish) {
+            if (err) return handleError(err);
+        for (i = 0; i < wish.length; i++) {
+            var item = wish[i];
+            sr_data.push(item.itemName);
+        }
+        cb(wl_data);
+    });
+}
+
 // A render function that will render our form and
 // provide the values of the fields, as well
 // as any situation-specific locals
@@ -43,6 +57,19 @@ function renderForm(req,res,locals){
         sr: sr_data
         },locals||{}));
     });
+
+    populateWL(req, res, locals, function(wl_data) {
+        res.render('profile', extend({
+        title: 'My Profile',
+        csrfToken: req.csrfToken(),
+        givenName: req.user.givenName,
+        surname: req.user.surname,
+        email: req.user.username,
+        rating: req.user.customData.rating,
+        wl: wl_data
+        },locals||{}));
+    });
+
 }
 
 // Export a function which will create the

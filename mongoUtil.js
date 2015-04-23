@@ -11,3 +11,11 @@ var salesSchema = new Schema({
 });
 var salesModel = mongoose.model('SalesModel', salesSchema);
 module.exports.salesModel = salesModel;
+
+
+var wishSchema = new Schema({
+    itemName: String,
+    price: Number,
+});
+var wishModel = mongoose.model('WishModel', wishSchema);
+module.exports.wishModel = wishModel;

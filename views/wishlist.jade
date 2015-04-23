@@ -5,11 +5,17 @@ html
       href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css',
       rel='stylesheet'
     )
+    //-
+      style(type='text/css').
+
+
   body
     div.container
 
-      div.page-header
-        h1 Add Friends
+      .page-header
+        h1 New Wish List
+        .pull-right
+          a(href='/') Return to home page
 
       if errors
         each error in errors
@@ -17,22 +23,31 @@ html
             span #{error.error}
       if saved
         div.alert.alert-success
-          span Friend Added Successfully
+          span Your Wish List has been submitted
       form.login-form.form-horizontal(method='post', role='form')
         input(name='_csrf', type='hidden', value=csrfToken)
 
         div.form-group
-          label.col-sm-4 Enter Name
+          label.col-sm-4 Item Name
           div.col-sm-8
             input.form-control(
-              placeholder='Enter email of friend'
+              placeholder='Item Name',
               required=true,
               name='itemName',
               type='text',
               value=itemName)
+        div.form-group
+          label.col-sm-4 Price
+          div.col-sm-8
+            input.form-control(placeholder='Threshold Item Price',
+              required=true,
+              name='price',
+              type='number',
+              value=price)
 
         div.form-group
           div.col-sm-offset-4.col-sm-8
-            button.login.btn.btn-primary(type='submit') Add
-        div.pull-right
-          a(href="/") Return to home page
+            button.login.btn.btn-primary(type='submit') Submit
+
+
+          #map-canvas
