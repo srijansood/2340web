@@ -20,7 +20,7 @@ It uses MongoDB as a *database* and is *persistent*. The database implementation
     * Stored in salesmodel Model
     * Required Fields usage in form
     * Display confirmation of submission
-    * **Display Map location once submitted TODO** - have image, display 
+    * **Display Map location once submitted TODO** - have image, display
 4.  **Friends: TODO**
     * Add Friend by username
     * Display all friends in a list
@@ -29,5 +29,6 @@ It uses MongoDB as a *database* and is *persistent*. The database implementation
         * Delete Friend**
 5. **Wishlist: TODO**
     * Add new item
-    * View existing items in wishlist
-    * Matches? Notification.
+    * View existing items in wishlist below add
+    * Groupon coupon offer on adding item to wishlist
+    * Scan items in wishlist across friends' sales reports on log in. Notification on match
