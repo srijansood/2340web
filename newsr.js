@@ -26,7 +26,6 @@ function renderForm(req,res,locals){
 
 // Export a function which will create the
 // router and return it
-
 module.exports = function newsr(uservar){
   var sales =  new (require('./mongoUtil.js').salesModel)();
   var router = express.Router();
@@ -41,16 +40,22 @@ module.exports = function newsr(uservar){
         // The form library calls this success method if the
         // form is being POSTED and does not have errors
 
-        // The express-stormpath library will populate req.user,
-        // all we have to do is set the properties that we care
-        // about and then cal save() on the user object:
-        //sales.owner = require('./index.js').currUser.username;
+        // Populates model and saves to database
         sales.owner = res.locals.user.username;
         sales.itemName = form.data.itemName;
         sales.price = form.data.price;
         sales.location = form.data.location;
         sales.description = form.data.description;
         sales.save();
+        markers = [{ 'location': sales.location }]
+        var gm = require('googlemaps');
+        var map_img = gm.staticMap(sales.location, 16, '500x400', false, false, markers);
+
+        // var jsdom = require('jsdom').jsdom;
+        // var doc = jsdom();
+        // var window = doc.defaultView;
+        // doc.getElementById("map_img").src = map_img;
+
         renderForm(req,res,{
               saved:true
             });

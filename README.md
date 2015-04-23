@@ -15,12 +15,12 @@ It uses MongoDB as a *database* and is *persistent*. The database implementation
 2. Profile:
     * Forms library separates rendering and validation by passing the template to jade; model-view separation
     * Displays Sales Report created by user
-    * **Display Avg Rating TODO**
+    * **Display Avg Rating TODO** - initialization left
 3. Sales Report:
     * Stored in salesmodel Model
     * Required Fields usage in form
-    * **Display confirmation of submission? TODO**
-    * **Display Map location once submitted TODO**
+    * Display confirmation of submission
+    * **Display Map location once submitted TODO** - have image, display 
 4.  **Friends: TODO**
     * Add Friend by username
     * Display all friends in a list

@@ -39,6 +39,7 @@ function renderForm(req,res,locals){
         givenName: req.user.givenName,
         surname: req.user.surname,
         email: req.user.username,
+        rating: req.user.customData.rating,
         sr: sr_data
         },locals||{}));
     });
@@ -64,6 +65,7 @@ module.exports = function profile(){
         // about and then cal save() on the user object:
         req.user.givenName = form.data.givenName;
         req.user.surname = form.data.surname;
+        req.user.customData.rating = form.data.rating;
         req.user.save(function(err){
           if(err){
             if(err.developerMessage){
