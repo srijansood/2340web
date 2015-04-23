@@ -36,7 +36,7 @@ function populateWL(req, res, locals, cb) {
             if (err) return handleError(err);
         for (i = 0; i < wish.length; i++) {
             var item = wish[i];
-            sr_data.push(item.itemName);
+            wl_data.push(item.itemName);
         }
         cb(wl_data);
     });

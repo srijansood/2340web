@@ -15,7 +15,7 @@ module.exports.salesModel = salesModel;
 
 var wishSchema = new Schema({
     itemName: String,
-    price: Number,
+    price: Number
 });
 var wishModel = mongoose.model('WishModel', wishSchema);
 module.exports.wishModel = wishModel;
