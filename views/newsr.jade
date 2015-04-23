@@ -5,20 +5,20 @@ html
       href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css',
       rel='stylesheet'
     )
-
-    style(type='text/css').
-      html, body, #map-canvas { height: 90%; margin: 0; padding: 0;}
-    script(type='text/javascript', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyA9Yk1cm0k-m2BItGdHjyII79VSAxbPCMM')
-    script(type='text/javascript').
-      function initialize() {
-      var mapOptions = {
-      center: { lat: -34.397, lng: 150.644},
-      zoom: 15
-      };
-      var map = new google.maps.Map(document.getElementById('map-canvas'),
-      mapOptions);
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
+    //-
+      style(type='text/css').
+        html, body, #map-canvas { height: 90%; margin: 0; padding: 0;}
+      script(type='text/javascript', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyA9Yk1cm0k-m2BItGdHjyII79VSAxbPCMM')
+      script(type='text/javascript').
+        function initialize() {
+        var mapOptions = {
+        center: { lat: -34.397, lng: 150.644},
+        zoom: 15
+        };
+        var map = new google.maps.Map(document.getElementById('map-canvas'),
+        mapOptions);
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
 
   body
     div.container
@@ -74,4 +74,5 @@ html
           div.col-sm-offset-4.col-sm-8
             button.login.btn.btn-primary(type='submit') Submit
 
-        #map-canvas
+        //-
+          #map-canvas

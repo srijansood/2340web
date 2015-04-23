@@ -55,7 +55,8 @@ app.get('/admins', stormpath.groupsRequired(['admins']), function(req, res) {
 });
 
 app.use('/profile', stormpath.loginRequired, require('./profile')());
-app.use('/newsr', stormpath.loginRequired, require('./newsr')(currUser));
+//console.log("currUser: " + locals.user);
+app.use('/newsr', stormpath.loginRequired, require('./newsr')(stormpath.user));
 app.use('/friends', stormpath.loginRequired, require('./friends')());
 
 app.listen(app.get('port'), function() {

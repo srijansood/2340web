@@ -3,3 +3,7 @@ Auth Library:
 Express docs -
 https://docs.stormpath.com/nodejs/express/
 https://www.npmjs.com/package/express-stormpath
+
+Mongo:
+https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
+http://cwbuecheler.com/web/tutorials/2013/node-express-mongo/

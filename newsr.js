@@ -27,7 +27,7 @@ function renderForm(req,res,locals){
 // Export a function which will create the
 // router and return it
 
-module.exports = function newsr(){
+module.exports = function newsr(uservar){
   var sales =  new (require('./mongoUtil.js').salesModel)();
   var router = express.Router();
   router.use(csurf({ sessionKey: 'stormpathSession' }));
@@ -44,13 +44,17 @@ module.exports = function newsr(){
         // The express-stormpath library will populate req.user,
         // all we have to do is set the properties that we care
         // about and then cal save() on the user object:
-        sales.owner = require('./index.js').currUser.username;
+        //sales.owner = require('./index.js').currUser.username;
+        sales.owner = res.locals.user.username;
         sales.itemName = form.data.itemName;
         sales.price = form.data.price;
         sales.location = form.data.location;
         sales.description = form.data.description;
         sales.save();
-        res.send('Table: ' + sales);
+        renderForm(req,res,{
+              saved:true
+            });
+        // res.send('Table: ' + sales);
         // req.user.save(function(err){
         //   if(err){
         //     if(err.developerMessage){
