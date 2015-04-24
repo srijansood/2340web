@@ -14,6 +14,7 @@ module.exports.salesModel = salesModel;
 
 
 var wishSchema = new Schema({
+    owner: String,
     itemName: String,
     price: Number
 });

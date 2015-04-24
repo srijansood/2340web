@@ -42,6 +42,7 @@ module.exports = function wishlist(uservar){
         // Populates model and saves to database
         wish.itemName = form.data.itemName;
         wish.price = form.data.price;
+        wish.owner = res.locals.user.username;
         wish.save();
 
         // var jsdom = require('jsdom').jsdom;
