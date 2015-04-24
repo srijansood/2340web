@@ -21,14 +21,11 @@ It uses MongoDB as a *database* (*EC 10-15*) and is *persistent* (REST: *EC 10-3
     * Required Fields usage in form
     * Display confirmation of submission
     * Display Map location once submitted
-4. **Friends: TODO**
+4. Friends:
     * Add Friend by username
     * Display all friends in a list
-    * Clicking on one takes to friend's profile (can just use modified profile.js)
-        * Give Rating
-        * Delete Friend**
-5. Wishlist: TODO
+5. Wishlist:
     * Add new item
     * View existing items in wishlist
-    * **Groupon coupon offer on adding item to wishlist (*EC 5-10*)**
-    * **Scan items in wishlist across friends' sales reports on log in. Notification on match, push notification (*EC 5*)**
+    * Amazon/Groupon coupon offer on adding item to wishlist (*EC 5-10*)
+    * Scan items in wishlist across friends' sales reports on log in. Notification on match, push notification (*EC 5*)
