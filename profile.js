@@ -12,7 +12,6 @@ var profileForm = forms.create({
   surname: forms.fields.string({ required: true })
 });
 
-
 //Populates a list of sales reports created by the current user
 function populateSR(req, res, locals, cb) {
     var salesModel =  require('./mongoUtil.js').salesModel;
@@ -47,29 +46,19 @@ function populateWL(req, res, locals, cb) {
 // as any situation-specific locals
 function renderForm(req,res,locals){
     populateSR(req, res, locals, function(sr_data) {
-        res.render('profile', extend({
-        title: 'My Profile',
-        csrfToken: req.csrfToken(),
-        givenName: req.user.givenName,
-        surname: req.user.surname,
-        email: req.user.username,
-        rating: req.user.customData.rating,
-        sr: sr_data
-        },locals||{}));
-    });
-
-    populateWL(req, res, locals, function(wl_data) {
-        res.render('profile', extend({
-        title: 'My Profile',
-        csrfToken: req.csrfToken(),
-        givenName: req.user.givenName,
-        surname: req.user.surname,
-        email: req.user.username,
-        rating: req.user.customData.rating,
-        wl: wl_data
-        },locals||{}));
-    });
-
+        populateWL(req, res, locals, function(wl_data) {
+            res.render('profile', extend({
+                title: 'My Profile',
+                csrfToken: req.csrfToken(),
+                givenName: req.user.givenName,
+                surname: req.user.surname,
+                email: req.user.username,
+                rating: req.user.customData.rating,
+                wl: wl_data,
+                sr:sr_data
+            },locals||{}));
+        });
+    })
 }
 
 // Export a function which will create the
