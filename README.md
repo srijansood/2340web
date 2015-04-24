@@ -16,7 +16,7 @@ It uses MongoDB as a *database* (*EC 10-15*) and is *persistent* (REST: *EC 10-3
 2. Profile:
     * Forms library separates rendering and validation by passing the template to jade; model-view separation
     * Displays Sales Report created by user
-    * **Display Avg Rating TODO** - initialization left
+    * Display Avg Rating
 3. Sales Report:
     * Stored in salesmodel Model
     * Required Fields usage in form

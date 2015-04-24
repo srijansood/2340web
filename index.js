@@ -35,8 +35,33 @@ var stormpathMiddleware = stormpath.init(app, {
       appId: '729604067154235',
       appSecret: 'a3fc4cae48579ba686e12df1a56800f9',
       }
-    }
+  },
+  postRegistrationHandler: function(account, req, res, next) {
+    console.log('User:', account.email, 'just registered!');
+    account.getCustomData(function(err, data) {
+      if (err) return next(err);
+      data.rating = 0; //0 rating
+      data.friends = []; //empty array
+      data.save();
+      next();
+    });
+  },
 });
+
+// app.use(stormpath.init(app, {
+//   postRegistrationHandler: function(account, req, res, next) {
+//     console.log('User:', account.email, 'just registered!');
+//     account.getCustomData(function(err, data) {
+//       if (err) return next(err);
+//       // Initialize values here.
+//       data.balance = 0;
+//       data.customValue = 0;
+//       data.otherValue = 'woo';
+//       data.save();
+//       next();
+//     });
+//   },
+// })   );
 
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
