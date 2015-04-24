@@ -13,30 +13,29 @@ var friendForm = forms.create({
 });
 
 
-
 function populateNotifList(req, res, locals, cb) {
-    var notifModel =  require('./mongoUtil.js').notifModel;
+    var wishModel =  require('./mongoUtil.js').wishModel;
     var notif_data = [];
-    notifModel.find({owner:  require('./index.js').currUser.username},
-        function(err, sale) {
+    wishModel.find({owner:  require('./index.js').currUser.username},
+        function(err, wish) {
             if (err) return handleError(err);
-        for (i = 0; i < sale.length; i++) {
-            var item = sale[i];
-            notif_data[notif_data.length] = item.itemName;
+        for (i = 0; i < notifModel.length; i++) {
+            notif_data.push(notifModel[i].itemName.concat("is available at a price of $", notifModel[i].price, "at", notifModel[i].location));
         }
         cb(notif_data);
     });
 }
-
 // A render function that will render our form and
 // provide the values of the fields, as well
 // as any situation-specific locals
 
 function renderForm(req,res,locals){
-  res.render('notifs', extend({
-    title: 'Notification Centre',
-    csrfToken: req.csrfToken()
-  },locals||{}));
+    populateNotifList(req, res, locals, function(sr_data) {
+        res.render('notifs', extend({
+          title: 'Notification Centre',
+          csrfToken: req.csrfToken()
+    },locals||{}));
+    })
 }
 
 // function authenticateFriend(form) {

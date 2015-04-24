@@ -45,6 +45,14 @@ module.exports = function wishlist(uservar){
         wish.owner = res.locals.user.username;
         wish.save();
 
+        var sale =  new (require('./mongoUtil.js').salesModel)();
+        if ((sale.itemName == wish.itemName) && (sale.price <= wish.price)) {
+            var notifModel =  require('./mongoUtil.js').notifModel;
+
+            notifModel.push([wish.owner, wish.itemName, sale.price, sale.location]);
+            notifModel.save();
+        }
+
         // var jsdom = require('jsdom').jsdom;
         // var doc = jsdom();
         // var window = doc.defaultView;
