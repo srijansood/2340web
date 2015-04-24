@@ -58,8 +58,8 @@ function renderForm(req,res,locals){
                 wl: wl_data,
                 sr:sr_data
             },locals||{}));
-        });
-    })
+           });
+       })
 }
 
 // Export a function which will create the
@@ -100,6 +100,24 @@ module.exports = function profile(){
             });
           }
         });
+
+        var util = require('util'),
+        OperationHelper = require('../lib/apac').OperationHelper;
+        var opHelper = new OperationHelper({
+            awsId: 'AKIAJCJM7JNT2SRDPXEA',
+            awsSecret: 'Ntz2oC3Sbs1n2L/o2KVRDI2OljhUNnVJ1piOTaR6',
+            //assocId: '[YOUR ASSOCIATE TAG HERE]'
+        });
+        opHelper.execute('ItemSearch', {
+            'SearchIndex': 'Books',
+            'Keywords': 'Harry Potter',
+            'ResponseGroup': 'ItemAttributes,Offers'
+        }, function(err, results) {
+               console.log(results);
+               renderForm(req, res, results, locals, {
+                     saved:true
+               });
+           });
       },
       error: function(form){
         // The form library calls this method if the form
