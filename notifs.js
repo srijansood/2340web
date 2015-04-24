@@ -15,14 +15,16 @@ var friendForm = forms.create({
 
 function populateNotifList(req, res, locals, cb) {
     var wishModel =  require('./mongoUtil.js').wishModel;
-    var notif_data = [];
+
     wishModel.find({owner:  require('./index.js').currUser.username},
         function(err, wish) {
             if (err) return handleError(err);
+            var notifModel =  require('./mongoUtil.js').notifModel;
+            var notif_data = [];
         for (i = 0; i < notifModel.length; i++) {
-            notif_data.push(notifModel[i].itemName.concat("is available at a price of $", notifModel[i].price, "at", notifModel[i].location));
+            //notif_data.push(notifModel.itemName.concat("is available at a price of $", notifModel.price, " at", notifModel.location));
         }
-        cb(notif_data);
+        cb('PlayStation4 at Walmart')
     });
 }
 // A render function that will render our form and
@@ -30,10 +32,11 @@ function populateNotifList(req, res, locals, cb) {
 // as any situation-specific locals
 
 function renderForm(req,res,locals){
-    populateNotifList(req, res, locals, function(sr_data) {
+    populateNotifList(req, res, locals, function(notif_data) {
         res.render('notifs', extend({
           title: 'Notification Centre',
-          csrfToken: req.csrfToken()
+          csrfToken: req.csrfToken(),
+          n: notif_data
     },locals||{}));
     })
 }

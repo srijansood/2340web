@@ -12,17 +12,38 @@ var friendForm = forms.create({
 
 });
 
+
+function populateFriendList(req, res, locals, cb) {
+    var friendModel =  require('./mongoUtil.js').friendModel;
+    var friend_data = [];
+    friendModel.find({owner: require('./index.js').currUser.username},
+        function(err, friend) {
+            if (err) return handleError(err);
+        for (i = 0; i < friend.length; i++) {
+            var item = friend[i];
+            friend_data.push(form.data.name);
+        }
+        cb(friend_data);
+    });
+}
+
+
 // A render function that will render our form and
 // provide the values of the fields, as well
 // as any situation-specific locals
 
-function renderForm(req,res,locals){
-  res.render('friends', extend({
-    title: 'Add Friends',
-    csrfToken: req.csrfToken()
-  },locals||{}));
-}
 
+function renderForm(req,res,locals){
+        populateFriendList(req, res, locals, function(friend_data) {
+            res.render('friends', extend({
+                title: 'Add Friends',
+                csrfToken: req.csrfToken(),
+                name: req.user.name,
+                f: friend_data
+            },locals||{}));
+        });
+
+}
 
 // function authenticateFriend(form) {
 //     app.getAccounts({email: form.data.name}, function(err, accounts) {
@@ -42,8 +63,8 @@ function renderForm(req,res,locals){
 // router and return it
 
 module.exports = function addFriends(){
-
-  var router = express.Router();
+    var friend =  new (require('./mongoUtil.js').friendModel)();
+    var router = express.Router();
 
   // router.use(csurf());
   router.use(csurf({ sessionKey: 'stormpathSession' }));
@@ -65,6 +86,13 @@ module.exports = function addFriends(){
         // req.user.customData.streetAddress = form.data.streetAddress;
         // req.user.customData.city = form.data.city;
         // req.user.customData.state = form.data.state;
+
+        // Populates model and saves to database
+
+        friend.owner = res.locals.user.username;
+        friend.friendName = form.data.name;
+        friend.save();
+
 
         authenticateFriend(form);
         req.user.customData.friend = req.user.customData.friend + " " + form.data.name;

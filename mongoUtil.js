@@ -20,11 +20,19 @@ var wishSchema = new Schema({
 var wishModel = mongoose.model('WishModel', wishSchema);
 module.exports.wishModel = wishModel;
 
-var notifSchema = new Schema([{
+var notifSchema = new Schema({
     owner: String,
     itemName: String,
     price: Number,
     location: String
-}]);
+});
 var notifModel = mongoose.model('NotifModel', notifSchema);
 module.exports.notifModel = notifModel;
+
+
+var friendSchema = new Schema({
+    owner: String,
+    friendName: String
+});
+var friendModel = mongoose.model('FriendModel', friendSchema);
+module.exports.friendModel = friendModel;
