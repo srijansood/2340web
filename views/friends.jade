@@ -10,6 +10,8 @@ html
 
       div.page-header
         h1 Add Friends
+        div.pull-right
+          a(href="/") Return to home page
 
       if errors
         each error in errors
@@ -17,22 +19,31 @@ html
             span #{error.error}
       if saved
         div.alert.alert-success
-          span Friend Added Successfully
+          span Friend has been saved successfully
       form.login-form.form-horizontal(method='post', role='form')
         input(name='_csrf', type='hidden', value=csrfToken)
 
         div.form-group
-          label.col-sm-4 Enter Name
+          label.col-sm-4 User Name
           div.col-sm-8
             input.form-control(
-              placeholder='Enter email of friend'
+              placeholder='Type username',
               required=true,
-              name='itemName',
+              name='givenName',
               type='text',
-              value=itemName)
+              value=givenName)
 
         div.form-group
           div.col-sm-offset-4.col-sm-8
             button.login.btn.btn-primary(type='submit') Add
-        div.pull-right
-          a(href="/") Return to home page
+
+
+        div.form-group
+          label.col-sm-4 Friend List
+          div.col-sm-8
+            input.form-control(
+              name='f',
+              type='text',
+              readonly,
+              textarea
+              value=f)
