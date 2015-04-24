@@ -27,8 +27,8 @@ It uses MongoDB as a *database* (*EC 10-15*) and is *persistent* (REST: *EC 10-3
     * Clicking on one takes to friend's profile (can just use modified profile.js)
         * Give Rating
         * Delete Friend**
-5. **Wishlist: TODO**
+5. Wishlist: TODO
     * Add new item
     * View existing items in wishlist
-    * Groupon coupon offer on adding item to wishlist (*EC 5-10*)
-    * Scan items in wishlist across friends' sales reports on log in. Notification on match, push notification (*EC 5*)
+    * **Groupon coupon offer on adding item to wishlist (*EC 5-10*)**
+    * **Scan items in wishlist across friends' sales reports on log in. Notification on match, push notification (*EC 5*)**
