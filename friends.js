@@ -9,54 +9,35 @@ var extend = require('xtend');
 
 var friendForm = forms.create({
   name: forms.fields.string({required: true}),
-
 });
 
 
-function populateFriendList(req, res, locals, cb) {
-    var friendModel =  require('./mongoUtil.js').friendModel;
-    var friend_data = [];
-    friendModel.find({owner: require('./index.js').currUser.username},
-        function(err, friend) {
-            if (err) return handleError(err);
-        for (i = 0; i < friend.length; i++) {
-            var item = friend[i];
-            friend_data.push(form.data.name);
-        }
-        cb(friend_data);
-    });
-}
 
 
 // A render function that will render our form and
 // provide the values of the fields, as well
 // as any situation-specific locals
-
-
 function renderForm(req,res,locals){
-        populateFriendList(req, res, locals, function(friend_data) {
             res.render('friends', extend({
                 title: 'Add Friends',
                 csrfToken: req.csrfToken(),
                 name: req.user.name,
-                f: friend_data
+                f: req.user.customData.friends
             },locals||{}));
-        });
-
-}
+        }
 
 // function authenticateFriend(form) {
-//     app.getAccounts({email: form.data.name}, function(err, accounts) {
-//       if (err) {
-//           if(err.developerMessage){
-//             console.error(err);
-//       }
-//       else {
-//           accounts.each(function (account, index) {
-//             console.log(account.givenName + " " + account.surname);
-//           });
-//       }
-//   });
+//     stormpath.getAccounts({email: form.data.name}, function(err, accounts) {
+//         if (err) {
+//             if(err.developerMessage){
+//                 console.error(err);
+//             } else {
+//                 accounts.each(function (account, index) {
+//                     console.log(account.givenName + " " + account.surname);
+//                 });
+//             }
+//         }
+//     })
 // }
 
 // Export a function which will create the
@@ -87,15 +68,13 @@ module.exports = function addFriends(){
         // req.user.customData.city = form.data.city;
         // req.user.customData.state = form.data.state;
 
-        // Populates model and saves to database
-
-        friend.owner = res.locals.user.username;
-        friend.friendName = form.data.name;
-        friend.save();
-
-
+        req.user.customData.friends.push(form.data.name);
         authenticateFriend(form);
-        req.user.customData.friend = req.user.customData.friend + " " + form.data.name;
+        // req.use.save();
+        //
+        //
+
+        // req.user.customData.friend = req.user.customData.friend + " " + form.data.name;
 
         req.user.save(function(err){
           if(err){
