@@ -21,7 +21,7 @@ It uses MongoDB as a *database* (*EC 10-15*) and is *persistent* (REST: *EC 10-3
     * Stored in salesmodel Model
     * Required Fields usage in form
     * Display confirmation of submission
-    * **Display Map location once submitted TODO** - have image, display
+    * Display Map location once submitted TODO
 4.  **Friends: TODO**
     * Add Friend by username
     * Display all friends in a list

@@ -17,9 +17,14 @@ var srForm = forms.create({
 // provide the values of the fields, as well
 // as any situation-specific locals
 
-function renderForm(req,res,locals){
+function renderForm(req, res, map_img, sales, locals){
   res.render('newsr', extend({
-    title: 'New Sales Report',
+    'title': 'New Sales Report',
+    'map_img': map_img,
+    // 'itemName': sales.itemName,
+    // 'price': sales.price,
+    // 'location': sales.location,
+    // 'description': sales.description,
     csrfToken: req.csrfToken()
   } , locals || {} ));
 }
@@ -36,47 +41,20 @@ module.exports = function newsr(uservar){
   router.all('/', function(req, res) {
     srForm.handle(req,{
       success: function(form){
-
-        // The form library calls this success method if the
-        // form is being POSTED and does not have errors
-
-        // Populates model and saves to database
         sales.owner = res.locals.user.username;
         sales.itemName = form.data.itemName;
         sales.price = form.data.price;
         sales.location = form.data.location;
         sales.description = form.data.description;
         sales.save();
-        markers = [{ 'location': sales.location }]
+        markers = [{ 'size': 'large', 'location': sales.location, 'color': 'red', 'label': 'X'}];
+        console.log("Markers: " + markers);
         var gm = require('googlemaps');
-        var map_img = gm.staticMap(sales.location, 16, '500x400', false, false, markers);
-
-        // var jsdom = require('jsdom').jsdom;
-        // var doc = jsdom();
-        // var window = doc.defaultView;
-        // doc.getElementById("map_img").src = map_img;
-
-        renderForm(req,res,{
+        var map_img = gm.staticMap(sales.location, 17, '1300x350', false, false, 'roadmap', markers);
+        console.log("Map: " + map_img);
+        renderForm(req, res, map_img, sales, {
               saved:true
-            });
-        // res.send('Table: ' + sales);
-        // req.user.save(function(err){
-        //   if(err){
-        //     if(err.developerMessage){
-        //       console.error(err);
-        //     }
-        //     renderForm(req,res,{
-        //       errors: [{
-        //         error: err.userMessage ||
-        //         err.message || String(err)
-        //       }]
-        //     });
-        //   }else{
-        //     renderForm(req,res,{
-        //       saved:true
-        //     });
-        //   }
-        // });
+        });
       },
       error: function(form){
         // The form library calls this method if the form
