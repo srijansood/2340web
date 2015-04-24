@@ -59,6 +59,7 @@ app.use('/profile', stormpath.loginRequired, require('./profile')());
 app.use('/newsr', stormpath.loginRequired, require('./newsr')(stormpath.user));
 app.use('/friends', stormpath.loginRequired, require('./friends')());
 app.use('/wishlist', stormpath.loginRequired, require('./wishlist')());
+app.use('/notifs', stormpath.loginRequired, require('./notifs')());
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'));
