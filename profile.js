@@ -4,6 +4,7 @@ var csurf = require('csurf');
 var collectFormErrors = require('express-stormpath/lib/helpers').collectFormErrors;
 var stormpath = require('express-stormpath');
 var extend = require('xtend');
+
 // Declare the schema of our form:
 var profileForm = forms.create({
   givenName: forms.fields.string({

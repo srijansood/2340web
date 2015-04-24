@@ -12,7 +12,6 @@ It uses MongoDB as a *database* (*EC 10-15*) and is *persistent* (REST: *EC 10-3
     * Facebook Integration (*EC 5-10*)
     * Admin Functionality - Test with https://swf45.herokuapp.com/admins (*EC*)
     * Email based password recovery (*EC 5-10*)
-    * current user is exported - ____ Design Pattern
 2. Profile:
     * Forms library separates rendering and validation by passing the template to jade; model-view separation
     * Displays Sales Report created by user
@@ -21,8 +20,8 @@ It uses MongoDB as a *database* (*EC 10-15*) and is *persistent* (REST: *EC 10-3
     * Stored in salesmodel Model
     * Required Fields usage in form
     * Display confirmation of submission
-    * Display Map location once submitted TODO
-4.  **Friends: TODO**
+    * Display Map location once submitted
+4. **Friends: TODO**
     * Add Friend by username
     * Display all friends in a list
     * Clicking on one takes to friend's profile (can just use modified profile.js)

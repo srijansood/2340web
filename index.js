@@ -7,9 +7,6 @@ var keyfile = pwd + '/.stormpath/apiKey.properties';
 var app = express();
 var currUser;
 
-// var mongoose = require('mongoose'); mongoose.connect('mongodb://heroku_app36070442:9441gn6pji392s59nd7t3n9suq@dbh11.mongolab.com:27117/heroku_app36070442');
-// var db = mongoose.connection;
-
 function compile(str, path) {
   return stylus(str)
     .set('filename', path)
@@ -18,8 +15,8 @@ function compile(str, path) {
 app.set('views', './views');
 app.set('view engine', 'jade');
 app.use(stylus.middleware(
-  { src: __dirname + '/public'
-  , compile: compile
+  { src: __dirname + '/public',
+    compile: compile
   }
 ));
 
@@ -37,7 +34,6 @@ var stormpathMiddleware = stormpath.init(app, {
       }
   },
   postRegistrationHandler: function(account, req, res, next) {
-    console.log('User:', account.email, 'just registered!');
     account.getCustomData(function(err, data) {
       if (err) return next(err);
       data.rating = 0; //0 rating
@@ -47,21 +43,6 @@ var stormpathMiddleware = stormpath.init(app, {
     });
   },
 });
-
-// app.use(stormpath.init(app, {
-//   postRegistrationHandler: function(account, req, res, next) {
-//     console.log('User:', account.email, 'just registered!');
-//     account.getCustomData(function(err, data) {
-//       if (err) return next(err);
-//       // Initialize values here.
-//       data.balance = 0;
-//       data.customValue = 0;
-//       data.otherValue = 'woo';
-//       data.save();
-//       next();
-//     });
-//   },
-// })   );
 
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/public'));
@@ -80,7 +61,6 @@ app.get('/admins', stormpath.groupsRequired(['admins']), function(req, res) {
 });
 
 app.use('/profile', stormpath.loginRequired, require('./profile')());
-//console.log("currUser: " + locals.user);
 app.use('/newsr', stormpath.loginRequired, require('./newsr')(stormpath.user));
 app.use('/friends', stormpath.loginRequired, require('./friends')());
 app.use('/wishlist', stormpath.loginRequired, require('./wishlist')());
